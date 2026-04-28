@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ClearVision Eye Clinic — See Clearly Again</title>
+    <meta name="description" content="Expert eye care with a personal touch. Book your appointment today and bring your world back into focus.">
+    <style>
+        :root {
+            --primary: #38BDF8;
+            --primary-dark: #0EA5E9;
+            --secondary: #0F172A;
+            --bg: #FFFFFF;
+            --bg-alt: #F8FAFC;
+            --bg-alt2: #F1F5F9;
+            --surface: #FFFFFF;
+            --accent: #FACC15;
+            --accent-dark: #EAB308;
+            --text: #1E293B;
+            --text-light: #64748B;
+            --text-muted: #94A3B8;
+            --border: #E2E8F0;
+            --card-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+            --card-shadow-hover: 0 12px 40px rgba(15, 23, 42, 0.12);
+            --nav-bg: rgba(255, 255, 255, 0.94);
+            --hero-gradient: linear-gradient(170deg, #F0F9FF 0%, #E0F2FE 30%, #FFFFFF 100%);
+            --hero-blob1: #BAE6FD;
+            --hero-blob2: #FEF3C7;
+            --chat-bubble-bg: #F0F9FF;
+            --process-gradient: linear-gradient(180deg, #fff 0%, #F8FAFC 100%);
+            --radius-sm: 10px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+            --whatsapp-green: #25D366;
+            --whatsapp-dark: #1faa52;
+            --nav-height: 70px;
+        }
+        [data-theme="dark"] {
+            --primary: #38BDF8;
+            --primary-dark: #0EA5E9;
+            --secondary: #E2E8F0;
+            --bg: #0F172A;
+            --bg-alt: #1a2332;
+            --bg-alt2: #1E293B;
+            --surface: #1E293B;
+            --accent: #FACC15;
+            --accent-dark: #EAB308;
+            --text: #E2E8F0;
+            --text-light: #94A3B8;
+            --text-muted: #64748B;
+            --border: #334155;
+            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+            --card-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+            --nav-bg: rgba(15, 23, 42, 0.94);
+            --hero-gradient: linear-gradient(170deg, #0f1b2e 0%, #132038 30%, #0F172A 100%);
+            --hero-blob1: #1a3350;
+            --hero-blob2: #2a2410;
+            --chat-bubble-bg: #1e3348;
+            --process-gradient: linear-gradient(180deg, #0F172A 0%, #1a2332 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + 20px); overflow-x: hidden; }
+        body { font-family: var(--font); color: var(--text); background: var(--bg); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; transition: background-color 0.35s ease, color 0.35s ease; }
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section-padding { padding: 80px 0; transition: background 0.35s ease; }
+        @media (max-width: 768px) { .section-padding { padding: 56px 0; } .container { padding: 0 20px; } }
+
+        /* LEFT FIXED BOOK BUTTON */
+        .left-fixed-book { position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 500; display: flex; align-items: center; justify-content: center; width: 48px; height: 160px; background: var(--primary); color: #fff; border-radius: 0 14px 14px 0; font-weight: 700; font-size: 0.85rem; letter-spacing: 1px; writing-mode: vertical-rl; text-orientation: mixed; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 24px rgba(56, 189, 248, 0.35); text-align: center; border: none; text-decoration: none; }
+        .left-fixed-book:hover { background: var(--primary-dark); box-shadow: 0 8px 36px rgba(56,189,248,0.55); width: 52px; border-radius: 0 16px 16px 0; }
+        @media (max-width: 900px) { .left-fixed-book { display: none !important; } }
+
+        /* CURSOR EYE */
+        .cursor-eye { position: fixed; pointer-events: none; z-index: 9999; width: 44px; height: 44px; border-radius: 50%; background: #fff; box-shadow: 0 4px 20px rgba(15,23,42,0.15), 0 0 0 3px rgba(56,189,248,0.25); display: flex; align-items: center; justify-content: center; transform: translate(-50%, -50%) scale(0); transition: transform 0.15s ease-out, box-shadow 0.3s ease; opacity: 0; font-size: 1.3rem; }
+        .cursor-eye.visible { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .cursor-eye.hovering { transform: translate(-50%, -50%) scale(1.35); box-shadow: 0 6px 28px rgba(15,23,42,0.22), 0 0 0 5px rgba(56,189,248,0.35); background: #F0F9FF; }
+        .cursor-eye .eye-inner { width: 16px; height: 16px; background: var(--secondary); border-radius: 50%; transition: transform 0.08s ease-out; position: relative; }
+        .cursor-eye .eye-inner::after { content: ''; position: absolute; width: 5px; height: 5px; background: #fff; border-radius: 50%; top: 3px; left: 3px; }
+        [data-theme="dark"] .cursor-eye { background: #1E293B; box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 0 3px rgba(56,189,248,0.35); }
+        [data-theme="dark"] .cursor-eye.hovering { background: #1e3348; box-shadow: 0 6px 28px rgba(0,0,0,0.5), 0 0 0 5px rgba(56,189,248,0.5); }
+        @media (max-width: 768px) { .cursor-eye { display: none !important; } }
+
+        /* NAVIGATION */
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; transition: var(--transition); background: transparent; height: var(--nav-height); }
+        .nav.scrolled { background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 1px 20px rgba(15, 23, 42, 0.06); padding: 10px 0; height: 60px; }
+        [data-theme="dark"] .nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.3); }
+        .nav .container { display: flex; align-items: center; justify-content: space-between; height: 100%; gap: 12px; }
+        .nav-logo { font-size: 1.6rem; font-weight: 700; color: var(--secondary); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: color 0.35s ease; }
+        .nav-logo .logo-dot { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; display: inline-block; animation: logoPulse 2s ease-in-out infinite; }
+        @keyframes logoPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.6); opacity: 0.5; } }
+        .nav-logo .blink-eye { display: inline-block; animation: softBlink 3s ease-in-out infinite; font-size: 1.3rem; margin-left: 2px; vertical-align: middle; }
+        @keyframes softBlink { 0%,90%,100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+        .nav-right-group { display: flex; align-items: center; gap: 16px; }
+        .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--text); transition: var(--transition); position: relative; white-space: nowrap; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--primary); border-radius: 2px; transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { background: var(--primary) !important; color: #fff !important; padding: 10px 20px !important; border-radius: 50px !important; font-weight: 600 !important; transition: var(--transition) !important; box-shadow: 0 4px 16px rgba(56,189,248,0.3); }
+        .nav-cta:hover { background: var(--primary-dark) !important; box-shadow: 0 6px 24px rgba(56,189,248,0.45); transform: translateY(-1px); }
+        .nav-cta::after { display: none !important; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 1001; padding: 8px; background: none; border: none; }
+        .hamburger span { width: 26px; height: 2.5px; background: var(--secondary); border-radius: 2px; transition: var(--transition); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+        .theme-toggle { background: none; border: 2px solid var(--border); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; background: var(--surface); color: var(--text); position: relative; overflow: hidden; z-index: 1001; }
+        .theme-toggle:hover { border-color: var(--primary); box-shadow: 0 0 16px rgba(56,189,248,0.25); transform: rotate(15deg); }
+        .theme-toggle .icon-sun, .theme-toggle .icon-moon { transition: all 0.35s ease; position: absolute; line-height: 1; }
+        [data-theme="light"] .theme-toggle .icon-sun { opacity: 0; transform: rotate(180deg) scale(0.4); }
+        [data-theme="light"] .theme-toggle .icon-moon { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="dark"] .theme-toggle .icon-sun { opacity: 1; transform: rotate(0) scale(1); }
+        [data-theme="dark"] .theme-toggle .icon-moon { opacity: 0; transform: rotate(-180deg) scale(0.4); }
+        [data-theme="dark"] .theme-toggle { border-color: #4a5568; background: #1E293B; color: #FACC15; }
+        @media (max-width: 900px) { .nav-right-group { gap: 10px; } .theme-toggle { width: 36px; height: 36px; font-size: 1rem; } .nav-links { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: var(--surface); flex-direction: column; padding: 100px 32px 40px; gap: 24px; box-shadow: -4px 0 30px rgba(15,23,42,0.1); transition: right 0.4s cubic-bezier(0.4,0,0.2,1); border-radius: 24px 0 0 24px; } .nav-links.active { right: 0; } .hamburger { display: flex; } .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.4); z-index: 998; cursor: pointer; } .nav-overlay.active { display: block; } }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; background: var(--hero-gradient); position: relative; overflow: hidden; padding-top: var(--nav-height); transition: background 0.35s ease; }
+        .hero-bg-blob { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.35; pointer-events: none; z-index: 0; transition: background 0.35s ease; }
+        .hero-bg-blob.blob-1 { width: 500px; height: 500px; background: var(--hero-blob1); top: -150px; right: -100px; }
+        .hero-bg-blob.blob-2 { width: 350px; height: 350px; background: var(--hero-blob2); bottom: -80px; left: -80px; }
+        .hero .container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; width: 100%; }
+        .hero-content h1 { font-size: clamp(2.2rem,5vw,3.6rem); font-weight: 800; color: var(--secondary); line-height: 1.15; letter-spacing: -1px; margin-bottom: 18px; transition: color 0.35s ease; }
+        .hero-content h1 .highlight { color: var(--primary); position: relative; }
+        .hero-content h1 .highlight::after { content: ''; position: absolute; bottom: 4px; left: 0; width: 100%; height: 8px; background: var(--accent); opacity: 0.5; border-radius: 4px; z-index: -1; }
+        .hero-content p { font-size: 1.2rem; color: var(--text-light); margin-bottom: 32px; max-width: 460px; line-height: 1.6; transition: color 0.35s ease; }
+        .hero-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 50px; font-weight: 600; font-size: 1rem; cursor: pointer; border: none; transition: var(--transition); white-space: nowrap; font-family: var(--font); letter-spacing: 0.1px; text-decoration: none; justify-content: center; }
+        .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 24px rgba(56,189,248,0.35); }
+        .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 10px 32px rgba(56,189,248,0.5); transform: translateY(-2px); }
+        .btn-whatsapp { background: var(--surface); color: var(--whatsapp-green); border: 2px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: all 0.3s ease; }
+        .btn-whatsapp:hover { border-color: var(--whatsapp-green); box-shadow: 0 8px 24px rgba(37,211,102,0.2); transform: translateY(-2px); background: #f9fefb; }
+        [data-theme="dark"] .btn-whatsapp:hover { background: #1a3328; }
+        .btn-whatsapp svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .hero-image-wrapper { position: relative; display: flex; justify-content: center; }
+        .hero-image { width: 100%; max-width: 480px; aspect-ratio: 4/5; object-fit: cover; border-radius: var(--radius-xl); box-shadow: 0 24px 60px rgba(15,23,42,0.12); transition: var(--transition); }
+        .hero-image:hover { transform: scale(1.02); box-shadow: 0 30px 70px rgba(15,23,42,0.18); }
+        .hero-badge { position: absolute; bottom: -16px; right: -16px; background: var(--surface); padding: 14px 20px; border-radius: var(--radius); box-shadow: var(--card-shadow); display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.9rem; color: var(--secondary); animation: floatBadge 3s ease-in-out infinite; white-space: nowrap; transition: background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease; }
+        @keyframes floatBadge { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .hero-badge .badge-icon { width: 40px; height: 40px; background: #FEF3C7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+        [data-theme="dark"] .hero-badge .badge-icon { background: #3d3510; }
+        @media (max-width: 900px) { .hero { text-align: center; padding-top: 100px; } .hero .container { grid-template-columns: 1fr; gap: 40px; } .hero-content p { max-width: 100%; margin-left: auto; margin-right: auto; } .hero-buttons { justify-content: center; } .hero-image { max-width: 320px; aspect-ratio: 1/1; border-radius: 50%; } .hero-badge { bottom: 0; right: 10px; font-size: 0.8rem; padding: 10px 14px; } }
+
+        /* SECTIONS TITLES */
+        .section-title { text-align: center; margin-bottom: 56px; }
+        .section-title h2 { font-size: clamp(1.8rem,3.5vw,2.4rem); font-weight: 700; color: var(--secondary); letter-spacing: -0.5px; margin-bottom: 10px; transition: color 0.35s ease; }
+        .section-title p { color: var(--text-light); font-size: 1.05rem; max-width: 500px; margin: 0 auto; transition: color 0.35s ease; }
+        .section-title .accent-dot { display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin: 0 6px; vertical-align: middle; animation: logoPulse 2s ease-in-out infinite; }
+
+        /* PROBLEM */
+        #problem { background: var(--bg-alt); }
+        .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; perspective: 1000px; }
+        .problem-card { background: var(--surface); padding: 28px 24px; border-radius: var(--radius); box-shadow: var(--card-shadow); text-align: center; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); border: 1px solid transparent; position: relative; transform-style: preserve-3d; transform: translateZ(0); will-change: transform, box-shadow; }
+        .problem-card::before { content: ''; position: absolute; inset: -2px; border-radius: calc(var(--radius) + 2px); background: linear-gradient(135deg, var(--primary), var(--accent), var(--primary)); background-size: 200% 200%; z-index: -1; opacity: 0; transition: opacity 0.4s ease; animation: gradientBorder 3s linear infinite; filter: blur(6px); }
+        @keyframes gradientBorder { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .problem-card:hover::before { opacity: 0.45; }
+        .problem-card:hover { transform: translateY(-8px) rotateX(2deg) rotateY(2deg) scale(1.02); box-shadow: 0 20px 45px rgba(15,23,42,0.15), 0 0 0 4px rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.3); }
+        [data-theme="dark"] .problem-card:hover { box-shadow: 0 20px 45px rgba(0,0,0,0.5), 0 0 0 4px rgba(56,189,248,0.2); }
+        .problem-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.6rem; transition: all 0.3s ease; }
+        .problem-card:hover .problem-icon { transform: scale(1.1) rotate(-5deg); box-shadow: 0 8px 20px rgba(56,189,248,0.3); }
+        .problem-card:nth-child(1) .problem-icon { background: #E0F2FE; } .problem-card:nth-child(2) .problem-icon { background: #FEF3C7; } .problem-card:nth-child(3) .problem-icon { background: #FEE2E2; } .problem-card:nth-child(4) .problem-icon { background: #E8F5E9; }
+        [data-theme="dark"] .problem-card:nth-child(1) .problem-icon { background: #1a3a50; } [data-theme="dark"] .problem-card:nth-child(2) .problem-icon { background: #3d3510; } [data-theme="dark"] .problem-card:nth-child(3) .problem-icon { background: #3d1a1a; } [data-theme="dark"] .problem-card:nth-child(4) .problem-icon { background: #1a3020; }
+        .problem-card h3 { font-weight: 600; font-size: 1.1rem; color: var(--secondary); margin-bottom: 6px; transition: color 0.3s; }
+        .problem-card:hover h3 { color: var(--primary); }
+        .problem-card p { color: var(--text-light); font-size: 0.9rem; line-height: 1.5; }
+        .problem-extra { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s; font-size: 0.8rem; color: var(--primary-dark); font-weight: 500; margin-top: 0; }
+        .problem-card:hover .problem-extra { max-height: 30px; opacity: 1; margin-top: 8px; }
+
+        /* SOLUTION */
+        #solution { background: var(--bg); }
+        .solution-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 20px; }
+        .solution-card { background: var(--surface); padding: 30px 24px; border-radius: var(--radius); box-shadow: var(--card-shadow); transition: var(--transition); border: 1px solid transparent; cursor: default; position: relative; overflow: hidden; }
+        .solution-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--primary); border-radius: 0 0 4px 4px; transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+        .solution-card:hover::before { transform: scaleX(1); }
+        .solution-card:hover { transform: translateY(-6px); box-shadow: var(--card-shadow-hover); border-color: var(--border); }
+        .solution-icon-wrap { width: 52px; height: 52px; border-radius: var(--radius-sm); background: #F0F9FF; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-size: 1.5rem; transition: var(--transition); }
+        [data-theme="dark"] .solution-icon-wrap { background: #1a3a50; }
+        .solution-card:hover .solution-icon-wrap { background: #E0F2FE; transform: scale(1.08); } [data-theme="dark"] .solution-card:hover .solution-icon-wrap { background: #1e4058; }
+        .solution-card h3 { font-weight: 600; font-size: 1.1rem; color: var(--secondary); margin-bottom: 6px; }
+        .solution-card p { color: var(--text-light); font-size: 0.88rem; }
+
+        /* PROCESS */
+        #process { background: var(--process-gradient); }
+        .process-steps { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; max-width: 900px; margin: 0 auto; }
+        .process-step { text-align: center; flex: 1; min-width: 200px; padding: 20px; position: relative; }
+        .process-step-num { width: 70px; height: 70px; border-radius: 50%; background: var(--surface); box-shadow: var(--card-shadow); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.6rem; font-weight: 700; color: var(--primary); position: relative; z-index: 2; transition: var(--transition); border: 3px solid transparent; }
+        .process-step:hover .process-step-num { border-color: var(--primary); box-shadow: 0 8px 32px rgba(56,189,248,0.25); transform: scale(1.08); }
+        .process-step h3 { font-weight: 600; color: var(--secondary); margin-bottom: 4px; transition: color 0.35s ease; }
+        .process-step p { color: var(--text-light); font-size: 0.88rem; transition: color 0.35s ease; }
+        .process-connector { width: 80px; height: 2px; background: var(--border); flex-shrink: 0; position: relative; top: -18px; transition: background 0.35s ease; }
+        .process-connector::after { content: '→'; position: absolute; right: -8px; top: -12px; color: var(--primary); font-size: 1.2rem; font-weight: 700; }
+        @media (max-width: 768px) { .process-steps { flex-direction: column; gap: 8px; } .process-connector { width: 2px; height: 40px; top: 0; } .process-connector::after { right: -6px; top: auto; bottom: -10px; transform: rotate(90deg); } .process-step { min-width: 100%; } }
+
+        /* EYE TIPS */
+        #eye-tips { background: var(--bg); }
+        .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 20px; max-width: 900px; margin: 0 auto; }
+        .tip-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--card-shadow); transition: var(--transition); cursor: pointer; border: 1px solid transparent; }
+        .tip-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); border-color: var(--border); }
+        .tip-thumb { width: 100%; aspect-ratio: 16/10; object-fit: cover; background: var(--bg-alt2); position: relative; display: flex; align-items: center; justify-content: center; }
+        .tip-thumb .play-circle { width: 50px; height: 50px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--primary); box-shadow: 0 4px 16px rgba(0,0,0,0.1); transition: var(--transition); position: absolute; z-index: 2; }
+        [data-theme="dark"] .tip-thumb .play-circle { background: rgba(30,41,59,0.9); }
+        .tip-card:hover .play-circle { background: var(--primary); color: #fff; transform: scale(1.1); box-shadow: 0 8px 28px rgba(56,189,248,0.4); }
+        .tip-thumb img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .tip-card:hover .tip-thumb img { transform: scale(1.04); }
+        .tip-info { padding: 16px 18px; }
+        .tip-info h4 { font-weight: 600; font-size: 0.95rem; color: var(--secondary); margin-bottom: 4px; transition: color 0.35s ease; }
+        .tip-info span { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+        /* DOCTOR */
+        #doctor { background: var(--bg); }
+        .doctor-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 50px; align-items: center; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--card-shadow); padding: 40px; max-width: 1000px; margin: 0 auto; transition: background 0.35s ease, box-shadow 0.35s ease; }
+        .doctor-image { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--radius-lg); box-shadow: 0 16px 40px rgba(15,23,42,0.1); }
+        .doctor-trust-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .trust-badge { display: flex; align-items: center; gap: 6px; background: var(--bg-alt); padding: 8px 14px; border-radius: 50px; font-size: 0.85rem; font-weight: 500; color: var(--secondary); white-space: nowrap; transition: background 0.35s ease, color 0.35s ease; }
+        .trust-badge .check-icon { color: #22C55E; font-weight: 700; }
+        .doctor-info h2 { font-size: 1.8rem; font-weight: 700; color: var(--secondary); margin-bottom: 4px; transition: color 0.35s ease; }
+        .doctor-info .doctor-role { color: var(--primary); font-weight: 600; font-size: 1rem; margin-bottom: 16px; display: block; }
+        .doctor-info p { color: var(--text-light); line-height: 1.7; margin-bottom: 16px; transition: color 0.35s ease; }
+        @media (max-width: 768px) { .doctor-grid { grid-template-columns: 1fr; gap: 30px; padding: 24px; } .doctor-image { aspect-ratio: 1/1; max-width: 260px; margin: 0 auto; } .doctor-info { text-align: center; } .doctor-trust-badges { justify-content: center; } }
+
+        /* TESTIMONIALS */
+        #testimonials { background: var(--bg-alt); }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
+        .testimonial-chat { background: var(--surface); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--card-shadow); position: relative; transition: var(--transition); border: 1px solid transparent; }
+        .testimonial-chat:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); border-color: var(--border); }
+        .testimonial-chat .chat-bubble { background: var(--chat-bubble-bg); padding: 14px 18px; border-radius: 16px 16px 16px 4px; font-style: italic; color: var(--text); font-size: 0.95rem; line-height: 1.5; margin-bottom: 14px; position: relative; transition: background 0.35s ease, color 0.35s ease; }
+        .testimonial-chat .chat-bubble::after { content: ''; position: absolute; bottom: -8px; left: 16px; width: 16px; height: 16px; background: var(--chat-bubble-bg); clip-path: polygon(0 0,100% 0,0 100%); transition: background 0.35s ease; }
+        .testimonial-author { display: flex; align-items: center; gap: 10px; padding-left: 8px; }
+        .testimonial-author .author-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: #E0F2FE; flex-shrink: 0; }
+        .testimonial-author .author-name { font-weight: 600; font-size: 0.9rem; color: var(--secondary); transition: color 0.35s ease; }
+        .testimonial-author .author-detail { font-size: 0.78rem; color: var(--text-muted); }
+
+        /* FLOATING REVIEWS */
+        #floating-reviews { background: var(--bg); overflow: hidden; padding: 80px 0 60px; }
+        .floating-reviews-track { display: flex; gap: 20px; width: max-content; animation: scrollReviews 80s linear infinite; will-change: transform; }
+        .floating-reviews-track:hover { animation-play-state: paused; }
+        @keyframes scrollReviews { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .floating-review-card { background: var(--surface); border-radius: var(--radius); padding: 24px 22px; box-shadow: var(--card-shadow); border: 1px solid transparent; min-width: 300px; max-width: 320px; flex-shrink: 0; transition: box-shadow 0.3s ease, transform 0.2s ease; }
+        .floating-review-card:hover { transform: translateY(-6px); box-shadow: var(--card-shadow-hover); border-color: var(--border); }
+        .floating-review-card .fr-stars { color: #FACC15; font-size: 1rem; margin-bottom: 10px; letter-spacing: 2px; }
+        .floating-review-card .fr-text { font-style: italic; color: var(--text); font-size: 0.95rem; line-height: 1.5; margin-bottom: 14px; }
+        .floating-review-card .fr-author { display: flex; align-items: center; gap: 10px; }
+        .floating-review-card .fr-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+        .floating-review-card .fr-name { font-weight: 600; font-size: 0.9rem; color: var(--secondary); }
+        .floating-review-card .fr-time { font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
+        .live-badge { display: inline-flex; align-items: center; gap: 5px; background: #22C55E; color: #fff; font-size: 0.7rem; padding: 3px 10px; border-radius: 50px; font-weight: 600; animation: livePulse 1.5s ease-in-out infinite; margin-left: 6px; }
+        @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .google-review-link { text-align: center; margin-top: 30px; }
+        .google-review-link a { color: var(--primary); font-weight: 600; text-decoration: underline; transition: color 0.2s; }
+        .google-review-link a:hover { color: var(--primary-dark); }
+
+        /* LOCAL TRUST */
+        #local-trust { background: var(--bg-alt); }
+        .local-areas { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+        .local-area-tag { background: var(--surface); padding: 12px 22px; border-radius: 50px; font-weight: 600; font-size: 0.95rem; color: var(--secondary); box-shadow: var(--card-shadow); transition: var(--transition); border: 1px solid transparent; display: flex; align-items: center; gap: 6px; }
+        .local-area-tag:hover { border-color: var(--primary); box-shadow: var(--card-shadow-hover); transform: translateY(-2px); }
+        .local-area-tag .loc-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+        .local-desc { text-align: center; color: var(--text-light); font-size: 0.95rem; margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .btn-directions { display: inline-flex; align-items: center; gap: 8px; padding: 13px 26px; border-radius: 50px; font-weight: 600; font-size: 0.95rem; cursor: pointer; border: 2px solid var(--border); background: var(--surface); color: var(--secondary); transition: var(--transition); font-family: var(--font); text-decoration: none; box-shadow: var(--card-shadow); }
+        .btn-directions:hover { border-color: var(--primary); box-shadow: var(--card-shadow-hover); transform: translateY(-2px); background: #F0F9FF; } [data-theme="dark"] .btn-directions:hover { background: #1a3340; }
+
+        /* GALLERY */
+        #clinic-gallery { background: var(--bg); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 10px 0; }
+        .gallery-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius); box-shadow: var(--card-shadow); transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.3s ease; cursor: pointer; background: var(--bg-alt2); }
+        .gallery-grid img:hover { transform: scale(1.04) rotate(0.5deg); box-shadow: 0 16px 40px rgba(15,23,42,0.2); filter: brightness(1.05); }
+
+        /* APPOINTMENT */
+        #appointment { background: var(--bg); }
+        .appointment-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: 0 8px 40px rgba(15,23,42,0.08); padding: 48px 40px; border: 1px solid var(--border); }
+        .appointment-info h3 { font-size: 1.6rem; font-weight: 700; color: var(--secondary); }
+        .appointment-info .info-item { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-weight: 500; color: var(--secondary); }
+        .appointment-form { display: flex; flex-direction: column; gap: 14px; }
+        .appointment-form input, .appointment-form select, .appointment-form textarea { padding: 13px 16px; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; background: var(--bg-alt); color: var(--text); }
+        .btn-submit { background: var(--whatsapp-green); color: #fff; padding: 15px 28px; border-radius: 50px; font-weight: 700; cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 10px; }
+        @media (max-width: 768px) { .appointment-wrapper { grid-template-columns: 1fr; padding: 28px 20px; } }
+
+        #cta-final { background: var(--secondary); color: #fff; text-align: center; padding: 80px 0; position: relative; overflow: hidden; } [data-theme="dark"] #cta-final { background: #0d1525; }
+        #cta-final::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,189,248,0.25) 0%, transparent 70%); top: -200px; left: 50%; transform: translateX(-50%); pointer-events: none; }
+        .btn-whatsapp-cta { background: var(--whatsapp-green); color: #fff; padding: 18px 38px; border-radius: 50px; font-weight: 700; display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+
+        .footer { background: #0B1324; color: #94A3B8; text-align: center; padding: 30px 24px; font-size: 0.9rem; }
+
+        .floating-whatsapp { position: fixed; bottom: 28px; right: 28px; z-index: 999; width: 58px; height: 58px; background: var(--whatsapp-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 28px rgba(37,211,102,0.4); animation: pulseWA 2.2s ease-in-out infinite; text-decoration: none; }
+        .floating-whatsapp:hover { transform: scale(1.1); box-shadow: 0 12px 36px rgba(37,211,102,0.55); animation: none; }
+        .floating-whatsapp svg { width: 28px; height: 28px; fill: #fff; }
+        @keyframes pulseWA { 0%,100% { box-shadow: 0 8px 28px rgba(37,211,102,0.4); } 50% { box-shadow: 0 8px 44px rgba(37,211,102,0.7), 0 0 0 16px rgba(37,211,102,0.08); } }
+
+        .sticky-book-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); padding: 12px 20px; z-index: 997; display: none; justify-content: center; gap: 12px; border-radius: 20px 20px 0 0; }
+        .sticky-book-bar.visible { display: flex; }
+        @media (min-width: 769px) { .sticky-book-bar { display: none !important; } }
+        @media (max-width: 768px) { .floating-whatsapp { bottom: 90px; right: 16px; width: 50px; height: 50px; } .floating-whatsapp svg { width: 24px; height: 24px; } .sticky-book-bar.visible~.floating-whatsapp { bottom: 100px; } }
+
+        .form-success { display: none; text-align: center; padding: 20px; color: #22C55E; font-weight: 600; font-size: 1.1rem; background: #F0FDF4; border-radius: var(--radius); border: 1px solid #BBF7D0; }
+        [data-theme="dark"] .form-success { background: #1a3020; border-color: #2d5a30; }
+        .form-success.show { display: block; }
+        body.menu-open { overflow: hidden; }
+        .anim-hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .anim-hidden.anim-visible { opacity: 1; transform: translateY(0); }
+        .anim-hidden.anim-delay-1 { transition-delay: 0.1s; } .anim-hidden.anim-delay-2 { transition-delay: 0.2s; } .anim-hidden.anim-delay-3 { transition-delay: 0.3s; } .anim-hidden.anim-delay-4 { transition-delay: 0.4s; }
+
+        /* ASK QUESTION (fix for centering) */
+        .question-box { max-width: 580px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .question-box input { width: 300px; max-width: 100%; flex-shrink: 1; padding: 14px 18px; border: 2px solid var(--border); border-radius: 50px; font-size: 0.95rem; font-family: var(--font); background: var(--bg-alt); color: var(--text); }
+        .question-box input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(56,189,248,0.08); background: var(--surface); }
+        .btn-ask-wa { background: var(--whatsapp-green); color: #fff; padding: 14px 24px; border-radius: 50px; font-weight: 700; font-size: 0.95rem; cursor: pointer; border: none; transition: var(--transition); font-family: var(--font); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(37,211,102,0.35); white-space: nowrap; text-decoration: none; }
+        .btn-ask-wa:hover { background: var(--whatsapp-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.5); }
+        .btn-ask-wa svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .question-success { display: none; text-align: center; padding: 10px; color: #22C55E; font-weight: 500; font-size: 0.9rem; margin-top: 8px; }
+        .question-success.show { display: block; }
+    </style>
+</head>
+<body>
+    <a href="#appointment" class="left-fixed-book">BOOK NOW</a>
+    <div class="cursor-eye" id="cursorEye"><div class="eye-inner" id="eyeInner"></div></div>
+    <nav class="nav" id="navbar">
+        <div class="container">
+            <a href="#" class="nav-logo"><span class="logo-dot"></span> ClearVision<span class="blink-eye">👁️</span></a>
+            <div class="nav-right-group">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#problem">Problems</a></li><li><a href="#solution">Services</a></li><li><a href="#eye-tips">Tips</a></li><li><a href="#doctor">Our Doctor</a></li><li><a href="#internships">Internships</a></li><li><a href="#ask-question">Ask Us</a></li><li><a href="#appointment" class="nav-cta">Book Appointment</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle"><span class="icon-sun">☀️</span><span class="icon-moon">🌙</span></button>
+                <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <div>
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <div class="hero-bg-blob blob-1"></div><div class="hero-bg-blob blob-2"></div>
+            <div class="container">
+                <div class="hero-content anim-hidden">
+                    <h1>Struggling to <span class="highlight">See Clearly?</span></h1>
+                    <p>We help you bring your world back into focus with expert eye care that feels personal and warm.</p>
+                    <div class="hero-buttons">
+                        <a href="#appointment" class="btn btn-primary">📅 Book Appointment</a>
+                        <a href="https://wa.me/918595113908" target="_blank" class="btn btn-whatsapp">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20"><path fill="#25D366" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                            Chat on WhatsApp
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-image-wrapper anim-hidden anim-delay-2">
+                    <img src="doctor.jpg" alt="Our doctor" class="hero-image" width="480" height="600" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&h=750&fit=crop&q=80';">
+                    <div class="hero-badge"><div class="badge-icon">⭐</div><span>4.9 · 2000+ Happy Patients</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM -->
+        <section id="problem" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>You're Not Alone<span class="accent-dot"></span></h2><p>Millions experience these common eye issues every day.</p></div>
+            <div class="problem-grid">
+                <div class="problem-card anim-hidden anim-delay-1"><div class="problem-icon">👁️</div><h3>Blurry Vision</h3><p>Fuzzy focus disrupts daily life.</p><div class="problem-extra">🔍 Book a clarity check today</div></div>
+                <div class="problem-card anim-hidden anim-delay-2"><div class="problem-icon">😫</div><h3>Eye Strain</h3><p>Screens leave eyes tired, dry.</p><div class="problem-extra">💡 Get relief in 30 minutes</div></div>
+                <div class="problem-card anim-hidden anim-delay-3"><div class="problem-icon">💢</div><h3>Frequent Headaches</h3><p>Often stem from uncorrected vision.</p><div class="problem-extra">✨ Discover the root cause</div></div>
+                <div class="problem-card anim-hidden anim-delay-4"><div class="problem-icon">📖</div><h3>Difficulty Reading</h3><p>Squinting at menus? Time for checkup.</p><div class="problem-extra">📞 Free consultation available</div></div>
+            </div>
+        </div></section>
+
+        <!-- SOLUTION -->
+        <section id="solution" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>Here's How We Help<span class="accent-dot"></span></h2><p>Comprehensive eye care delivered with warmth.</p></div>
+            <div class="solution-grid">
+                <div class="solution-card anim-hidden anim-delay-1"><div class="solution-icon-wrap">🔬</div><h3>Eye Checkup</h3><p>Full eye health assessment using advanced equipment.</p></div>
+                <div class="solution-card anim-hidden anim-delay-2"><div class="solution-icon-wrap">📊</div><h3>Vision Testing</h3><p>Precision tests for clarity, depth, and color.</p></div>
+                <div class="solution-card anim-hidden anim-delay-3"><div class="solution-icon-wrap">👓</div><h3>Lens & Glasses</h3><p>Personalized frames and lenses consultation.</p></div>
+                <div class="solution-card anim-hidden anim-delay-4"><div class="solution-icon-wrap">🏥</div><h3>Cataract Care</h3><p>Expert evaluation and compassionate management.</p></div>
+            </div>
+        </div></section>
+
+        <!-- PROCESS -->
+        <section id="process" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>Simple 3-Step Care<span class="accent-dot"></span></h2></div>
+            <div class="process-steps">
+                <div class="process-step anim-hidden anim-delay-1"><div class="process-step-num">1</div><h3>Book Appointment</h3><p>Schedule online in under a minute.</p></div>
+                <div class="process-connector"></div>
+                <div class="process-step anim-hidden anim-delay-2"><div class="process-step-num">2</div><h3>Eye Examination</h3><p>Thorough, painless eye exam.</p></div>
+                <div class="process-connector"></div>
+                <div class="process-step anim-hidden anim-delay-3"><div class="process-step-num">3</div><h3>Personalized Treatment</h3><p>Custom care plan just for you.</p></div>
+            </div>
+        </div></section>
+
+        <!-- EYE TIPS -->
+        <section id="eye-tips" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>Quick Eye Care Tips</h2></div>
+            <div class="tips-grid">
+                <div class="tip-card anim-hidden anim-delay-1"><a href="https://www.youtube.com/shorts/7atxbHKGCDo" target="_blank" class="tip-thumb" style="display:block;"><img src="https://img.youtube.com/vi/7atxbHKGCDo/hqdefault.jpg" alt="Reduce Eye Strain" loading="lazy"><div class="play-circle">▶</div></a><div class="tip-info"><h4>How to Reduce Eye Strain?</h4><span>⏱️ Quick Short</span></div></div>
+                <div class="tip-card anim-hidden anim-delay-2"><a href="https://www.youtube.com/shorts/Yt9Vj_Q_5do" target="_blank" class="tip-thumb" style="display:block;"><img src="https://img.youtube.com/vi/Yt9Vj_Q_5do/hqdefault.jpg" alt="Eye Exercises" loading="lazy"><div class="play-circle">▶</div></a><div class="tip-info"><h4>3 Eye Exercises for Screen Users</h4><span>⏱️ Quick Short</span></div></div>
+                <div class="tip-card anim-hidden anim-delay-3"><a href="https://www.youtube.com/shorts/pCrwOFSC6lM" target="_blank" class="tip-thumb" style="display:block;"><img src="https://img.youtube.com/vi/pCrwOFSC6lM/hqdefault.jpg" alt="Screen Headaches" loading="lazy"><div class="play-circle">▶</div></a><div class="tip-info"><h4>Screen Headaches? Here's Why</h4><span>⏱️ Quick Short</span></div></div>
+            </div>
+        </div></section>
+
+        <!-- DOCTOR -->
+        <section id="doctor" class="section-padding"><div class="container">
+            <div class="doctor-grid anim-hidden">
+                <div><img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=500&h=500&fit=crop&q=80" alt="Dr. Priya Sharma" class="doctor-image" loading="lazy" width="500" height="500"></div>
+                <div class="doctor-info">
+                    <span class="doctor-role">👩‍⚕️ Lead Optometrist</span>
+                    <h2>Dr. Priya Sharma</h2>
+                    <p>With over 7 years of experience in optometry and a deep passion for restoring clear vision, Dr. Priya believes in treating every patient like family. She combines clinical excellence with a gentle, approachable demeanor that puts even the most anxious patients at ease.</p>
+                    <p>Her philosophy is simple: <em>"Every pair of eyes tells a story — my job is to help you see yours more clearly."</em> She regularly attends international conferences to stay updated with the latest advancements in eye care.</p>
+                    <div class="doctor-trust-badges">
+                        <span class="trust-badge"><span class="check-icon">✓</span> 7+ Years Experience</span>
+                        <span class="trust-badge"><span class="check-icon">✓</span> 5000+ Patients Treated</span>
+                        <span class="trust-badge"><span class="check-icon">✓</span> Certified Optometrist</span>
+                        <span class="trust-badge"><span class="check-icon">✓</span> Friendly & Approachable</span>
+                    </div>
+                </div>
+            </div>
+        </div></section>
+
+        <!-- INTERNSHIPS -->
+        <section id="internships" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>🌟 Join Our Team – Internships<span class="accent-dot"></span></h2><p>Passionate about eye care? Learn from experienced professionals in a real clinical setting.</p></div>
+            <div class="solution-grid anim-hidden anim-delay-1">
+                <div class="solution-card"><div class="solution-icon-wrap">🏥</div><h3>Clinical Internship</h3><p>Shadow our optometrists, assist in eye examinations, and understand patient flow.</p></div>
+                <div class="solution-card"><div class="solution-icon-wrap">🔬</div><h3>Optometry Assistant</h3><p>Learn to operate diagnostic devices and support the doctor during check‑ups.</p></div>
+                <div class="solution-card"><div class="solution-icon-wrap">💬</div><h3>Front Desk & Patient Care</h3><p>Develop communication skills by managing appointments and patient interactions.</p></div>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 30px 0 24px;" class="anim-hidden anim-delay-2">
+                <span class="trust-badge"><span class="check-icon">✓</span> Hands‑on Experience</span>
+                <span class="trust-badge"><span class="check-icon">✓</span> Mentorship</span>
+                <span class="trust-badge"><span class="check-icon">✓</span> Certificate</span>
+                <span class="trust-badge"><span class="check-icon">✓</span> Flexible Hours</span>
+            </div>
+            <div style="text-align: center;" class="anim-hidden anim-delay-3">
+                <a href="https://wa.me/918595113908?text=Hello%20ClearVision%2C%20I%20am%20interested%20in%20the%20internship%20program." target="_blank" class="btn-whatsapp-cta" style="padding: 14px 36px; font-size: 1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22"><path fill="#fff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                    Apply Now on WhatsApp
+                </a>
+            </div>
+        </div></section>
+
+        <!-- FLOATING REVIEWS -->
+        <section id="floating-reviews" class="section-padding">
+            <div class="container"><div class="section-title anim-hidden"><h2>💬 What Our Patients Say About Us <span class="live-badge">LIVE</span></h2></div></div>
+            <div class="floating-reviews-track anim-hidden anim-delay-1" id="reviewsTrack"></div>
+            <div class="container"><div class="google-review-link anim-hidden anim-delay-2"><a href="https://maps.google.com/?q=Main+Market+Indore+Madhya+Pradesh" target="_blank">⭐ Check live reviews on Google</a></div></div>
+        </section>
+
+        <!-- ASK QUESTION (centered) -->
+        <section id="ask-question" class="section-padding"><div class="container">
+    <div class="section-title anim-hidden"><h2>Have a Question?<span class="accent-dot"></span></h2></div>
+    <div class="question-box anim-hidden anim-delay-1">
+        <input type="text" id="questionInput" placeholder="Type your question here…">
+        <button class="btn-ask-wa" onclick="sendQuestion()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="20" height="20">
+                <path fill="#fff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+            </svg>
+            Send on WhatsApp
+        </button>
+    </div>
+    <div class="question-success" id="questionSuccess">✅ WhatsApp opened!</div>
+</div></section>
+
+        <!-- LOCAL TRUST -->
+        <section id="local-trust" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>Trusted Across Indore</h2></div>
+            <div class="local-areas anim-hidden anim-delay-1">
+                <div class="local-area-tag"><span class="loc-dot"></span> Indore</div>
+                <div class="local-area-tag"><span class="loc-dot"></span> Vijay Nagar</div>
+                <div class="local-area-tag"><span class="loc-dot"></span> Palasia</div>
+            </div>
+            <p class="local-desc anim-hidden anim-delay-2">Proudly serving patients from Main Market, Indore.</p>
+            <div style="text-align:center;" class="anim-hidden anim-delay-3">
+                <a href="https://maps.google.com/?q=Main+Market+Indore+Madhya+Pradesh" target="_blank" class="btn-directions">📍 Get Directions</a>
+            </div>
+        </div></section>
+
+        <!-- GALLERY -->
+        <section id="clinic-gallery" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>📸 Inside Our World</h2></div>
+            <div class="gallery-grid anim-hidden anim-delay-1">
+                <img src="gallery1.png" alt="Clinic photo 1" loading="lazy" onerror="this.style.display='none'">
+                <img src="gallery2.png" alt="Clinic photo 2" loading="lazy" onerror="this.style.display='none'">
+                <img src="gallery3.png" alt="Clinic photo 3" loading="lazy" onerror="this.style.display='none'">
+                <img src="gallery4.png" alt="Clinic photo 4" loading="lazy" onerror="this.style.display='none'">
+                <img src="gallery5.png" alt="Clinic photo 5" loading="lazy" onerror="this.style.display='none'">
+                <img src="gallery6.png" alt="Clinic photo 6" loading="lazy" onerror="this.style.display='none'">
+            </div>
+        </div></section>
+
+        <!-- APPOINTMENT -->
+        <section id="appointment" class="section-padding"><div class="container">
+            <div class="section-title anim-hidden"><h2>Book Your Appointment</h2></div>
+            <div class="appointment-wrapper anim-hidden anim-delay-2">
+                <div class="appointment-info">
+                    <h3>Let's Get Started</h3><p>Fill the form and we'll confirm via WhatsApp.</p>
+                    <div class="info-item"><div class="info-icon">📞</div><span>+91 85951 13908</span></div>
+                    <div class="info-item"><div class="info-icon">📍</div><span>Main Market, Indore, Madhya Pradesh</span></div>
+                    <div class="info-item"><div class="info-icon">🕐</div><span>Mon–Sat: 9 AM – 7 PM</span></div>
+                </div>
+                <form class="appointment-form" id="appointmentForm">
+                    <input type="text" placeholder="Full Name *" id="formName" required>
+                    <input type="tel" placeholder="Phone Number *" id="formPhone" required>
+                    <input type="email" placeholder="Email Address" id="formEmail">
+                    <input type="date" id="formDate" required>
+                    <select required id="formService"><option value="">Select Service *</option><option>Eye Checkup</option><option>Vision Testing</option><option>Glasses Consultation</option><option>Cataract Care</option></select>
+                    <textarea placeholder="Any message..." id="formMessage"></textarea>
+                    <button type="submit" class="btn-submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22"><path fill="#fff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                        Send via WhatsApp
+                    </button>
+                </form>
+                <div class="form-success" id="formSuccess">🎉 WhatsApp opened! We'll call you shortly.</div>
+            </div>
+        </div></section>
+
+        <!-- FINAL CTA -->
+        <section id="cta-final"><div class="container anim-hidden">
+            <h2>See Clearly Again Today</h2><p>Book instantly on WhatsApp.</p>
+            <a href="https://wa.me/918595113908" target="_blank" class="btn-whatsapp-cta">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="26" height="26"><path fill="#fff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                Book Appointment
+            </a>
+        </div></section>
+
+        <footer class="footer"><div class="container">
+            <p>&copy; 2026 <strong>ClearVision Eye Clinic</strong>. Made with ❤️ for your eyes.</p>
+            <p style="font-size:0.8rem;margin-top:4px;">📍 Main Market, Indore | 📞 +91 85951 13908</p>
+        </div></footer>
+    </div>
+
+    <a href="https://wa.me/918595113908" target="_blank" class="floating-whatsapp" aria-label="Chat on WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="28" height="28"><path fill="#fff" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+    </a>
+    <div class="sticky-book-bar" id="stickyBookBar">
+        <a href="#appointment" class="btn-sticky-book">Book Now</a>
+        <a href="https://wa.me/918595113908" target="_blank" class="btn-sticky-wa">💬 WhatsApp</a>
+    </div>
+
+    <!-- MAIN SCRIPT -->
+    <script>
+        (function() {
+            const html = document.documentElement, navbar = document.getElementById('navbar'), stickyBookBar = document.getElementById('stickyBookBar'), floatingWA = document.querySelector('.floating-whatsapp'), hamburger = document.getElementById('hamburger'), navLinks = document.getElementById('navLinks'), navOverlay = document.getElementById('navOverlay'), body = document.body, appointmentForm = document.getElementById('appointmentForm'), formSuccess = document.getElementById('formSuccess'), cursorEye = document.getElementById('cursorEye'), eyeInner = document.getElementById('eyeInner');
+
+            const savedTheme = localStorage.getItem('clearvision-theme') || 'light';
+            html.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeToggle').addEventListener('click', () => {
+                const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('clearvision-theme', newTheme);
+            });
+
+            if (cursorEye && window.innerWidth > 768) {
+                let mx = innerWidth/2, my = innerHeight/2, cx = mx, cy = my;
+                document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursorEye.classList.add('visible'); });
+                document.addEventListener('mouseover', e => { if (e.target.closest('a,button,input,select,textarea,.btn,.problem-card,.tip-card,.floating-review-card,.gallery-grid img')) cursorEye.classList.add('hovering'); });
+                document.addEventListener('mouseout', e => { if (e.target.closest('a,button,input,select,textarea,.btn,.problem-card,.tip-card,.floating-review-card,.gallery-grid img')) cursorEye.classList.remove('hovering'); });
+                (function anim() { cx += (mx-cx)*0.12; cy += (my-cy)*0.12; cursorEye.style.left=cx+'px'; cursorEye.style.top=cy+'px'; const dx=mx-cx, dy=my-cy; const dist=Math.min(Math.sqrt(dx*dx+dy*dy)*0.15,5); const angle=Math.atan2(dy,dx); eyeInner.style.transform=`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px)`; requestAnimationFrame(anim); })();
+            }
+
+            let ticking=false;
+            function updateUI(){ const y=window.scrollY, m=window.innerWidth<=768; if(y>60) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); if(m && y>500){ stickyBookBar.classList.add('visible'); if(floatingWA) floatingWA.style.bottom='100px'; } else if(m){ stickyBookBar.classList.remove('visible'); if(floatingWA) floatingWA.style.bottom='90px'; } else{ stickyBookBar.classList.remove('visible'); if(floatingWA) floatingWA.style.bottom='28px'; } ticking=false; }
+            window.addEventListener('scroll', ()=>{ if(!ticking){ requestAnimationFrame(updateUI); ticking=true; } }, {passive:true}); window.addEventListener('resize', updateUI); updateUI();
+
+            function toggleMenu(force=false){ const active = force ? false : !navLinks.classList.contains('active'); if(active){ navLinks.classList.add('active'); navOverlay.classList.add('active'); hamburger.classList.add('active'); body.classList.add('menu-open'); } else{ navLinks.classList.remove('active'); navOverlay.classList.remove('active'); hamburger.classList.remove('active'); body.classList.remove('menu-open'); } }
+            hamburger.addEventListener('click', ()=>toggleMenu()); navOverlay.addEventListener('click', ()=>toggleMenu(true)); navLinks.addEventListener('click', e=>{ if(e.target.closest('a')) toggleMenu(true); });
+
+            const animEls = document.querySelectorAll('.anim-hidden');
+            const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('anim-visible'); observer.unobserve(entry.target); } }); }, { rootMargin: '0px 0px -60px 0px', threshold: 0.12 });
+            animEls.forEach(el => observer.observe(el));
+
+            window.addEventListener('load', () => {
+                document.querySelectorAll('.anim-hidden').forEach(el => {
+                    if (el.getBoundingClientRect().top < window.innerHeight - 60) {
+                        el.classList.add('anim-visible');
+                    }
+                });
+            });
+
+            if(appointmentForm){ appointmentForm.addEventListener('submit', function(e){ e.preventDefault(); const name=document.getElementById('formName').value.trim()||'Not provided', phone=document.getElementById('formPhone').value.trim()||'Not provided', email=document.getElementById('formEmail').value.trim()||'Not provided', date=document.getElementById('formDate').value||'Not specified', service=document.getElementById('formService').value||'Not specified', msg=document.getElementById('formMessage').value.trim()||'None'; const wa=`Hi ClearVision,%0A%0AI am ${name}.%0AService: ${service}.%0APhone: ${phone}%0AEmail: ${email}%0ADate: ${date}%0AMessage: ${msg}`; window.open(`https://wa.me/918595113908?text=${wa}`, '_blank'); appointmentForm.style.display='none'; formSuccess.style.display='block'; setTimeout(()=>{ appointmentForm.style.display='flex'; appointmentForm.reset(); formSuccess.style.display='none'; },6000); }); }
+        })();
+        function sendQuestion() { const input=document.getElementById('questionInput'); const q=input.value.trim(); if(!q) return; window.open(`https://wa.me/918595113908?text=Hi%20ClearVision,%0A%0AI%20have%20a%20question:%0A"${encodeURIComponent(q)}"`, '_blank'); document.getElementById('questionSuccess').classList.add('show'); input.value=''; setTimeout(()=>document.getElementById('questionSuccess').classList.remove('show'),4000); }
+    </script>
+
+    <!-- FLOATING REVIEWS SCRIPT -->
+    <script>
+        (function() {
+            const reviews = [
+                {stars:5, text:"Dr. Priya is simply amazing! She explained everything so gently.", name:"Sunita K.", initials:"SK", time:"2 min ago"},
+                {stars:5, text:"Very modern clinic, friendly staff. I was nervous but they made me comfortable.", name:"Rajesh J.", initials:"RJ", time:"5 min ago"},
+                {stars:5, text:"Quick appointment, perfect glasses. Highly recommend!", name:"Meena P.", initials:"MP", time:"8 min ago"},
+                {stars:5, text:"I brought my father for cataract follow-up. Exceptional care.", name:"Amit K.", initials:"AK", time:"12 min ago"},
+                {stars:5, text:"Their eye testing is so detailed. Crystal clear vision now!", name:"Priya S.", initials:"PS", time:"15 min ago"},
+                {stars:5, text:"Really impressed with the hygiene and patience of the doctor.", name:"Vikas M.", initials:"VM", time:"18 min ago"},
+                {stars:5, text:"The clinic ambience is so calming.", name:"Neha R.", initials:"NR", time:"22 min ago"},
+                {stars:5, text:"Excellent hygiene standards. Everything was spotless.", name:"Arjun D.", initials:"AD", time:"25 min ago"},
+                {stars:5, text:"Aftercare is superb. They called to check on me.", name:"Kavita S.", initials:"KS", time:"30 min ago"},
+                {stars:5, text:"Dr. Priya is a magician! Crystal clear vision now.", name:"Rohit M.", initials:"RM", time:"35 min ago"},
+                {stars:5, text:"Good aftercare instructions. I felt well taken care of.", name:"Anita P.", initials:"AP", time:"40 min ago"},
+                {stars:5, text:"I love the modern equipment.", name:"Deepak J.", initials:"DJ", time:"45 min ago"},
+                {stars:5, text:"My daughter was scared, but they made it fun.", name:"Lakshmi G.", initials:"LG", time:"50 min ago"},
+                {stars:5, text:"Amazing hygiene. They sanitize every instrument.", name:"Suresh T.", initials:"ST", time:"55 min ago"},
+                {stars:5, text:"The ambience is like a five-star hotel!", name:"Pooja N.", initials:"PN", time:"1 hour ago"},
+                {stars:5, text:"Good after-sale service. They adjusted my glasses for free.", name:"Manish K.", initials:"MK", time:"1 hour ago"},
+                {stars:5, text:"Transparent pricing. No hidden costs.", name:"Rekha W.", initials:"RW", time:"1 hour ago"},
+                {stars:5, text:"The doctor listened patiently to all my concerns.", name:"Alok S.", initials:"AS", time:"1 hour ago"},
+                {stars:5, text:"Best eye clinic I've been to. Hygiene is top-notch.", name:"Shweta B.", initials:"SB", time:"2 hours ago"},
+                {stars:5, text:"Great ambience, friendly receptionist.", name:"Vivek M.", initials:"VM", time:"2 hours ago"},
+                {stars:5, text:"Excellent aftercare tips. Got a follow-up call.", name:"Sneha R.", initials:"SR", time:"2 hours ago"},
+                {stars:5, text:"My father's cataract surgery was a breeze.", name:"Ramesh P.", initials:"RP", time:"3 hours ago"},
+                {stars:5, text:"They even sanitize the pens! Hygiene is top-notch.", name:"Jyoti D.", initials:"JD", time:"3 hours ago"},
+                {stars:5, text:"Soothing music and aroma put me at ease.", name:"Karan A.", initials:"KA", time:"3 hours ago"},
+                {stars:5, text:"Good aftercare. They gave me a care kit for my lenses.", name:"Divya M.", initials:"DM", time:"4 hours ago"},
+                {stars:5, text:"World-class ambience. Highly recommend.", name:"Nikhil S.", initials:"NS", time:"4 hours ago"},
+                {stars:5, text:"Post-LASIK consultation was very informative.", name:"Preeti J.", initials:"PJ", time:"4 hours ago"},
+                {stars:5, text:"Staff's hygiene consciousness is commendable.", name:"Sahil G.", initials:"SG", time:"5 hours ago"},
+                {stars:5, text:"Wonderful aftercare support. They answered my late-night query!", name:"Ritu K.", initials:"RK", time:"5 hours ago"},
+                {stars:5, text:"From ambience to expertise, everything was perfect.", name:"Mohit B.", initials:"MB", time:"5 hours ago"}
+            ];
+            const track = document.getElementById('reviewsTrack');
+            if (!track) return;
+            function createCard(r) {
+                const starsHTML = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+                return `<div class="floating-review-card"><div class="fr-stars">${starsHTML}</div><div class="fr-text">"${r.text}"</div><div class="fr-author"><div class="fr-avatar">${r.initials}</div><div class="fr-name">${r.name}</div><div class="fr-time">${r.time}</div></div></div>`;
+            }
+            let cardsHTML = '';
+            for (let i = 0; i < 2; i++) { reviews.forEach(r => cardsHTML += createCard(r)); }
+            track.innerHTML = cardsHTML;
+            track.classList.add('anim-visible');
+        })();
+    </script>
+</body>
+</html>
